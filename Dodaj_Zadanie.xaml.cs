@@ -3,6 +3,7 @@ using ListaZadan.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -46,6 +47,9 @@ namespace ListaZadan
                 zadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
                 zadanie.zakonczenie = (DateTime)DataDo.SelectedDate;
                 zadanie.prorytet = Piorytet.Value;
+                //db.Zadania.Add(zadanie);
+                //Zadanie ZmienianeZadanie = db.Zadania.FirstOrDefault(z => z == zadanie);
+
                 db.Attach(zadanie).State = EntityState.Modified;
                 db.SaveChanges();
                 DialogResult = true;

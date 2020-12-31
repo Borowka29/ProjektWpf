@@ -73,15 +73,21 @@ namespace ListaZadan
             Zadanie zadanie = (sender as FrameworkElement).DataContext as Zadanie;
             var EdycjaZadania = new Edytuj_Zadanie(db, zadanie);
             EdycjaZadania.Owner = this;
-            EdycjaZadania.ShowDialog();
+            if(true==EdycjaZadania.ShowDialog())
+            {
+                TasksListView.ItemsSource = db.Zadania.ToList();
+            }
         }
 
         private void UsunZadania_Click(object sender, RoutedEventArgs e)
         {
             foreach(Zadanie zad in TasksListView.SelectedItems)
             {
-                db.Zadania.Remove(zad);
+                var zadanie = db.Zadania.FirstOrDefault(z => z == zad);
+                db.Zadania.Remove(zadanie);
                 db.SaveChanges();
+
+
             }
             TasksListView.ItemsSource = db.Zadania.ToList();
         }
