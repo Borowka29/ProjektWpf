@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
-        Title="Lista zadań" Height="450" Width="500">
+        Title="Lista zadań" Height="504" Width="642">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Plik">
@@ -36,8 +36,8 @@
                 <ComboBox  Name="Grupowanie" Grid.Row="1" SelectedIndex="0" Margin="5" Padding="5" SelectionChanged="ZmianaGrupowania">
                     <ComboBoxItem Name="BezGrupowania">Bez grupowania</ComboBoxItem>
                     <ComboBoxItem Name="WedlugPiorytetu">Grupuj według piorytetu</ComboBoxItem>
-                <ComboBoxItem Name="WedlugDatyKoncowej" >Grupuj według daty zakończenia</ComboBoxItem>
-            </ComboBox>
+                    <ComboBoxItem Name="WedlugDatyKoncowej" >Grupuj według daty zakończenia</ComboBoxItem>
+                </ComboBox>
             <ListView Grid.Row="2" Name="TasksListView" Margin="5" Width="auto" SelectionChanged="ListboxSelectionChanged">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
@@ -94,8 +94,11 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-
-            <Button Grid.Row="3" Name="UsunZadanie" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
+            <WrapPanel Grid.Row="3">
+                <Button Grid.Row="3" Name="UsunZadanie" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
+                <Button Grid.Row="3" Name="DodajZadanie"  Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Dodajzadania</Button>
+            </WrapPanel>
+            
         </Grid>
     </DockPanel>
 </Window>

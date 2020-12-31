@@ -9,10 +9,10 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Label>Treść zadania</Label>
-            <TextBox Name="TrescZadania" IsEnabled="False" VerticalContentAlignment="Center"></TextBox>
+            <TextBox Name="TrescZadania" VerticalContentAlignment="Center"></TextBox>
         </DockPanel>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-            <Button Name="OKButton" Margin="5" Padding="15,3" IsDefault="True" Click="OKButton_Click">Powrót</Button>
+            <Button Name="ExitButton" Margin="5" Padding="15,3" IsDefault="True" Click="ExitButton_Click">Powrót</Button>
             <Button Name="AddButton" Margin="5" Padding="15,3" IsDefault="True" Click="AddButton_Click">Dodaj zadanie</Button>
         </WrapPanel>
         <Grid DockPanel.Dock="Top">
@@ -25,17 +25,49 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label HorizontalAlignment="Left" Grid.Column="1" Margin="78,0,0,34" Grid.RowSpan="2">Kategorie</Label>
-            <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
-                <Button Name="DodajKategorie" DockPanel.Dock="Bottom" IsEnabled="False" Click="DodawanieKategorii">Dodaj</Button>
-                <ListView Name="ListaObecnychKategorii"  Margin="5" Width="auto" IsHitTestVisible="False">
+            <DockPanel Grid.Row="1">
+                <Button  Name="UsunKategorie" DockPanel.Dock="Bottom" IsEnabled="False" Click="UsuwanieKategorii">Usuń</Button>
+                <ListView Name="ListaObecnychKategorii"  Margin="5" Width="auto" SelectionChanged="CzyMoznaUsunacKategorie">
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
                             <GridView.Columns >
+                                <GridViewColumn Width="30" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="TaskCheckBox" Tag="{Binding Kategoria.IdKategoria}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=IsSelected}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Kategoria.Typ}">
                                     <GridViewColumn.Header >
-                                        <GridViewColumnHeader >Wybierz Kategorie</GridViewColumnHeader>
+                                        <GridViewColumnHeader >Obecne Kategorie</GridViewColumnHeader>
                                     </GridViewColumn.Header>
                                 </GridViewColumn>
+
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+            <DockPanel Grid.Row="1" Grid.Column="1">
+                <Button Name="DodajKategorie" DockPanel.Dock="Bottom" IsEnabled="False" Click="DodawanieKategorii">Dodaj</Button>
+                <ListView Name="ListaNiedodanychKategorii"  Margin="5" Width="auto" SelectionChanged="CyMoznaDodacKategorie" >
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridView.Columns >
+                                <GridViewColumn Width="30" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="TaskCheckBox" Tag="{Binding IdKategoria}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=IsSelected}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Typ}">
+                                    <GridViewColumn.Header >
+                                        <GridViewColumnHeader >Pozostałe Kategorie</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+
                             </GridView.Columns>
                         </GridView>
                     </ListView.View>
@@ -47,7 +79,7 @@
         <DockPanel DockPanel.Dock="Top" >
             <Label DockPanel.Dock="Left">Piorytet</Label>
             <Label DockPanel.Dock="Right" Margin="5,2" Content="{Binding ElementName=Piorytet, Path=Value}"></Label>
-            <Slider Name="Piorytet" Minimum="1" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" IsEnabled="False" Ticks="1,2,3,4,5"></Slider>
+            <Slider Name="Piorytet" Minimum="1" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Ticks="1,2,3,4,5"></Slider>
         </DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -72,15 +104,27 @@
                 </WrapPanel>
             </StackPanel>
         </Grid>
-        <ListView Name="ListaKrokow"  Margin="5" Width="auto" IsHitTestVisible="False">
+        <WrapPanel DockPanel.Dock="Bottom">
+            <Button Name="UsunPodzadanie" IsEnabled="False"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" Click="UsunPodzadania">Usuń podzadania</Button>
+            <Button Name="DodajPodzadanie"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" Click="dodajPodzadanie">Dodaj podzadanie</Button>
+        </WrapPanel>
+        <ListView Name="ListaKrokow"  Margin="5" Width="auto" SelectionChanged="CzyMoznaUsunacPodzadanie">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridView.Columns >
+                        <GridViewColumn Width="30" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Name="TaskCheckBox" Tag="{Binding IdPodzadania}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=IsSelected}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Width="auto" DisplayMemberBinding="{Binding opis}">
                             <GridViewColumn.Header >
                                 <GridViewColumnHeader >Podzadania</GridViewColumnHeader>
                             </GridViewColumn.Header>
                         </GridViewColumn>
+
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

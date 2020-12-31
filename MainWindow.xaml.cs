@@ -112,6 +112,17 @@ namespace ListaZadan
             else TasksListView.ItemsSource = db.Zadania.ToList();
         }
 
+        private void DodajZadania_Click(object sender, RoutedEventArgs e)
+        {
+            var DodawanieZadania = new Dodaj_Zadanie(db);
+            DodawanieZadania.Owner = this;
+            if(true==DodawanieZadania.ShowDialog())
+            {
+                TasksListView.ItemsSource = db.Zadania.ToList();
+            }
+            
+        }
+
         //private void NewTask_Click(object sender, RoutedEventArgs e)
         //{
         //    NewTask view = new NewTask();
