@@ -1,0 +1,89 @@
+﻿<Window x:Class="ListaZadan.Dodaj_Zadanie"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ListaZadan"
+        mc:Ignorable="d"
+        Title="Dodaj_Zadanie" Height="450" Width="800">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Label>Treść zadania</Label>
+            <TextBox Name="TrescZadania" IsEnabled="False" VerticalContentAlignment="Center"></TextBox>
+        </DockPanel>
+        <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+            <Button Name="OKButton" Margin="5" Padding="15,3" IsDefault="True" Click="OKButton_Click">Powrót</Button>
+            <Button Name="AddButton" Margin="5" Padding="15,3" IsDefault="True" Click="AddButton_Click">Dodaj zadanie</Button>
+        </WrapPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="73*"/>
+                <ColumnDefinition Width="127*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label HorizontalAlignment="Left" Grid.Column="1" Margin="78,0,0,34" Grid.RowSpan="2">Kategorie</Label>
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+                <Button Name="DodajKategorie" DockPanel.Dock="Bottom" IsEnabled="False" Click="DodawanieKategorii">Dodaj</Button>
+                <ListView Name="ListaObecnychKategorii"  Margin="5" Width="auto" IsHitTestVisible="False">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridView.Columns >
+                                <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Kategoria.Typ}">
+                                    <GridViewColumn.Header >
+                                        <GridViewColumnHeader >Wybierz Kategorie</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+
+        </Grid>
+
+        <DockPanel DockPanel.Dock="Top" >
+            <Label DockPanel.Dock="Left">Piorytet</Label>
+            <Label DockPanel.Dock="Right" Margin="5,2" Content="{Binding ElementName=Piorytet, Path=Value}"></Label>
+            <Slider Name="Piorytet" Minimum="1" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" IsEnabled="False" Ticks="1,2,3,4,5"></Slider>
+        </DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <RadioButton Name="PrzedzialCzasu" IsChecked="True" Click="WyborPrzedzialuCzasu">Przedział Czasu</RadioButton>
+            <RadioButton Grid.Column="1" Name="DataUkonczenia"  Click="WyborDatyUkonczenia">Data Ukończenia</RadioButton>
+            <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+
+                <WrapPanel HorizontalAlignment="Center">
+                    <WrapPanel Name="OdKiedy" Visibility="Visible" >
+                        <Label>Od kiedy</Label>
+                        <DatePicker Name="DataOd"></DatePicker>
+                    </WrapPanel>
+                    <Label>Do kiedy</Label>
+                    <DatePicker Name="DataDo"></DatePicker>
+                </WrapPanel>
+            </StackPanel>
+        </Grid>
+        <ListView Name="ListaKrokow"  Margin="5" Width="auto" IsHitTestVisible="False">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridView.Columns >
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding opis}">
+                            <GridViewColumn.Header >
+                                <GridViewColumnHeader >Podzadania</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</Window>
