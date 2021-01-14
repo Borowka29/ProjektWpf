@@ -8,7 +8,7 @@
         Title="Dodaj_Zadanie" Height="450" Width="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <Label>Treść zadania</Label>
+            <Label Content="_Treść zadania" Target="{Binding ElementName=TrescZadania}" ></Label>
             <TextBox Name="TrescZadania" VerticalContentAlignment="Center"></TextBox>
         </DockPanel>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">

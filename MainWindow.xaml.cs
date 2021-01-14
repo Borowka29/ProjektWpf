@@ -103,9 +103,9 @@ namespace ListaZadan
         private void ZmianaGrupowania(object sender, SelectionChangedEventArgs e)
         {
             int ile = 0;
-            if (Grupowanie.SelectedIndex == 1) TasksListView.ItemsSource = db.Zadania.OrderBy(p => p.prorytet).ToList();
-            else if (Grupowanie.SelectedIndex == 2) TasksListView.ItemsSource = db.Zadania.OrderBy(p => p.zakonczenie).ToList();
-            else if (ile != 0) { TasksListView.ItemsSource = db.Zadania.OrderBy(p => p.IdZadanie).ToList(); ile=1; }
+            if (Grupowanie.SelectedIndex == 1) TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.prorytet).ToList();
+            else if (Grupowanie.SelectedIndex == 2) TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.zakonczenie).ToList();
+            else if (ile != 0) { TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.IdZadanie).ToList(); ile=1; }
 
         }
 

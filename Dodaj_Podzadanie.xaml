@@ -13,18 +13,18 @@
         </WrapPanel>
         
         <DockPanel DockPanel.Dock="Bottom">
-            <Label DockPanel.Dock="Left">Który na liscie</Label>
+            <Label DockPanel.Dock="Left" Content="Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
             <Label DockPanel.Dock="Right" Name="ilePodzadan"></Label>
             <Label DockPanel.Dock="Right" >Na liście jest:</Label>
-            <TextBox Name="ktoreNaLiscie"></TextBox>
+            <TextBox Name="ktoreNaLiscie" VerticalContentAlignment="Center"></TextBox>
         </DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label HorizontalAlignment="Center">Treść podzadania:</Label>
-            <TextBox Name="TrescPodzadania" Grid.Row="1"></TextBox>
+            <Label HorizontalAlignment="Center" Content="_Treść podzadania:" Target="{Binding ElementName=TrescPodzadania}"></Label>
+            <TextBox Name="TrescPodzadania" Grid.Row="1" VerticalContentAlignment="Center"></TextBox>
         </Grid>
     </DockPanel>
 </Window>

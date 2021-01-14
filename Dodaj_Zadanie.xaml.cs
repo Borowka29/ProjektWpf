@@ -31,6 +31,7 @@ namespace ListaZadan
             this.db = db;
             
             zadanie = new Zadanie();
+            zadanie.Tresc = "";
             
             OdswiezBazeKategorii();
         }
@@ -44,10 +45,10 @@ namespace ListaZadan
 
                 }
                 zadanie.Tresc = TrescZadania.Text.ToString(); ;
-                zadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
+                //zadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
                 zadanie.zakonczenie = (DateTime)DataDo.SelectedDate;
                 zadanie.prorytet = Piorytet.Value;
-                //db.Zadania.Add(zadanie);
+                db.Zadania.Add(zadanie);
                 //Zadanie ZmienianeZadanie = db.Zadania.FirstOrDefault(z => z == zadanie);
 
                 db.Attach(zadanie).State = EntityState.Modified;

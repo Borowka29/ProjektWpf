@@ -26,9 +26,9 @@ namespace ListaZadan.Migrations
                 {
                     IdZadanie = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tresc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tresc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     prorytet = table.Column<double>(type: "float", nullable: false),
-                    rozpoczecie = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    rozpoczecie = table.Column<DateTime>(type: "datetime2", nullable: true),
                     zakonczenie = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

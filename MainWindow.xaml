@@ -95,8 +95,8 @@
                 </ListView.View>
             </ListView>
             <WrapPanel Grid.Row="3">
-                <Button Grid.Row="3" Name="UsunZadanie" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
-                <Button Grid.Row="3" Name="DodajZadanie"  Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Dodajzadania</Button>
+                <Button Grid.Row="3" Name="UsunZadanie" ToolTip="Usuniesz zaznaczone elementy na swojej liście" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
+                <Button Grid.Row="3" Name="DodajZadanie" ToolTip="Stwórz nowe zadanie na swojej liście" Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Dodajzadania</Button>
             </WrapPanel>
             
         </Grid>

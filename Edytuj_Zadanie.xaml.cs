@@ -47,7 +47,27 @@ namespace ListaZadan
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
             if(TrescZadania.Text.Length!=0 )
-            DialogResult = true;
+            {
+                if (EdytowaneZadanie.Tresc != TrescZadania.Text)
+                {
+                    EdytowaneZadanie.Tresc = TrescZadania.Text;
+                }
+                if(DataOd.SelectedDate!=EdytowaneZadanie.rozpoczecie)
+                {
+                    EdytowaneZadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
+                }
+                if(DataDo.SelectedDate!=EdytowaneZadanie.zakonczenie)
+                {
+                    EdytowaneZadanie.zakonczenie = (DateTime)DataDo.SelectedDate;
+                }
+                if(Piorytet.Value!=EdytowaneZadanie.prorytet)
+                {
+                    EdytowaneZadanie.prorytet = Piorytet.Value;
+                }
+                db.Attach(EdytowaneZadanie).State = EntityState.Modified;
+                db.SaveChanges();
+                DialogResult = true;
+            }
         }
 
         private void WyborPrzedzialuCzasu(object sender, RoutedEventArgs e)
