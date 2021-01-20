@@ -11,8 +11,8 @@
             <MenuItem Header="_Plik">
                 <MenuItem Header="_Nowy" />
                 <MenuItem Header="_Edytuj" />
-                <MenuItem Header="_Otwórz" />
-                <MenuItem Header="_Zapisz" />
+                <MenuItem Header="_Otwórz" Click="ImportFromXML_Click"/>
+                <MenuItem Header="_Zapisz" Click="ExportToXML_Click"/>
                 <MenuItem Header="_Eksportuj do pliku PDF" Click="ExportToPDF_Click"/>
                 <Separator />
                 <MenuItem Header="_Zakończ" />
