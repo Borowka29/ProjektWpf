@@ -128,17 +128,49 @@ namespace ListaZadan
 
         private void ExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog savePfdDialog = new SaveFileDialog();
-            savePfdDialog.Filter = "Dokument PDF (*.pdf)|*.pdf";
+            SaveFileDialog savePdfDialog = new SaveFileDialog();
+            savePdfDialog.Filter = "Dokument PDF (*.pdf)|*.pdf";
 
-            if (savePfdDialog.ShowDialog() == true)
+            if (savePdfDialog.ShowDialog() == true)
             {
                 this.IsEnabled = false;
-                ExportPDF.Export(db, savePfdDialog.FileName);
+                ExportPDF.Export(db, savePdfDialog.FileName);
                 this.IsEnabled = true;
             }
             else
                 return;
+        }
+
+        private void ExportToXML_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveXMLDialog = new SaveFileDialog();
+            saveXMLDialog.Filter = "Plik danych (*.zad)|*.zad";
+
+            if (saveXMLDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                ExportXML.Export(db, saveXMLDialog.FileName);
+                this.IsEnabled = true;
+            }
+            else
+                return;
+        }
+
+        private void ImportFromXML_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openXMLDialog = new OpenFileDialog();
+            openXMLDialog.Filter = "Plik danych (*.zad)|*.zad";
+
+            if (openXMLDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                ExportXML.Import(db, openXMLDialog.FileName);
+                this.IsEnabled = true;
+            }
+            else
+                return;
+
+            TasksListView.ItemsSource = db.Zadania.ToList();
         }
 
         //private void NewTask_Click(object sender, RoutedEventArgs e)
