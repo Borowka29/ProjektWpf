@@ -69,7 +69,7 @@ namespace ListaZadan.Migrations
                     IdPodzadania = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     opis = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    któreNaLiscie = table.Column<string>(type: "int", nullable: true),
+                    któreNaLiscie = table.Column<int>(type: "int", nullable: true),
                     ZadanieIdZadanie = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

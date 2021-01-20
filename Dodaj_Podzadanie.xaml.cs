@@ -24,44 +24,31 @@ namespace ListaZadan
     public partial class Dodaj_Podzadanie : Window
     {
         ListaZadanContext db { get; set; }
-        private Podzadania Podzadanie { get; set; }
+        public Podzadania Podzadanie { get; set; }
         private Zadanie zadanie { get; set; }
+        private int IlePodzadan { get; set; }
 
-        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie)
+        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie, int ile)
         {
             InitializeComponent();
+            Podzadanie = new Podzadania();
             this.db = db;
             this.zadanie = zadanie;
-            ilePodzadan.Content = zadanie.Podzadania.Count();
+            ilePodzadan.Content = ile;
+            IlePodzadan = ile;
             
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if(TrescPodzadania.Text.Length>0 && ktoreNaLiscie.Text!=null && (Regex.IsMatch(ktoreNaLiscie.Text, @"^\d+$")) ==true && (Regex.IsMatch(ilePodzadan.Content.ToString(), @"^\d+$") == true)) 
+            if(TrescPodzadania.Text.Length>0 && ktoreNaLiscie.Text!=null && (Regex.IsMatch(ktoreNaLiscie.Text, @"^\d+$")) ==true)
             {
-                if(int.Parse(ktoreNaLiscie.Text)!=0 && (int.Parse(ktoreNaLiscie.Text)-1)<= int.Parse(ilePodzadan.Content.ToString()))
+                if(int.Parse(ktoreNaLiscie.Text)>0 && (int.Parse(ktoreNaLiscie.Text)-1)<= IlePodzadan)
                 {
-                    Podzadania Podzadanie = new Podzadania();
+                    
                     Podzadanie.Zadanie = zadanie;
                     Podzadanie.opis = TrescPodzadania.Text.ToString();
                     Podzadanie.któreNaLiscie = Convert.ToInt32(ktoreNaLiscie.Text);
-                    db.Podzadania.Add(Podzadanie);
-                    if (int.Parse(ktoreNaLiscie.Text)  <= int.Parse(ilePodzadan.Content.ToString()))
-                    {
-                        int k = Int16.Parse(ktoreNaLiscie.Text);
-                        List<Podzadania> WybranePodzadania = db.Podzadania.Where(z => z.któreNaLiscie >=k). ToList();
-                        foreach (Podzadania podzadania in WybranePodzadania)
-                        {
-                            podzadania.któreNaLiscie++;
-                            db.Attach(podzadania).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                    }
-                    else
-                    {
-                        db.SaveChanges();
-                    }
                     DialogResult = true;
                 }
                 else

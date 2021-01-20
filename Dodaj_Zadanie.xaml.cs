@@ -24,6 +24,10 @@ namespace ListaZadan
     {
         ListaZadanContext db { get; set; }
         public Zadanie zadanie { get; set; }
+        private ObservableCollection<Podzadania> LokalnePodzadania { get; set; }
+        private ObservableCollection<Kategora_Zadanie> LokalnaListaNatezacychKategorii { get; set; }= new ObservableCollection<Kategora_Zadanie>();
+
+        private ObservableCollection<Kategoria> LokalnaBazaNienalezacychKategorii { get; set; }
 
         public Dodaj_Zadanie(ListaZadanContext db)
         {
@@ -31,9 +35,12 @@ namespace ListaZadan
             this.db = db;
             
             zadanie = new Zadanie();
-            zadanie.Tresc = "";
-            
-            OdswiezBazeKategorii();
+            ListaKrokow.ItemsSource = zadanie.Podzadania;
+            ListaObecnychKategorii.ItemsSource =LokalnaListaNatezacychKategorii;
+
+            db.Kategorie.Include(o => o.Kategora_Zadanie).Load();
+            LokalnaBazaNienalezacychKategorii = db.Kategorie.Local.ToObservableCollection();
+            ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -42,16 +49,15 @@ namespace ListaZadan
             {
                 if(PrzedzialCzasu.IsChecked == false)
                 {
-
+                    zadanie.rozpoczecie = DateTime.Today;
                 }
-                zadanie.Tresc = TrescZadania.Text.ToString(); ;
-                //zadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
+                zadanie.Tresc = TrescZadania.Text.ToString();
                 zadanie.zakonczenie = (DateTime)DataDo.SelectedDate;
                 zadanie.prorytet = Piorytet.Value;
                 db.Zadania.Add(zadanie);
                 //Zadanie ZmienianeZadanie = db.Zadania.FirstOrDefault(z => z == zadanie);
 
-                db.Attach(zadanie).State = EntityState.Modified;
+                //db.Attach(zadanie).State = EntityState.Modified;
                 db.SaveChanges();
                 DialogResult = true;
                 this.Close();
@@ -61,27 +67,24 @@ namespace ListaZadan
 
         private void UsunPodzadania(object sender, RoutedEventArgs e)
         {
-            foreach (Podzadania zad in ListaKrokow.SelectedItems)
+            List<Podzadania> ZaznaczonePodzadania = ListaKrokow.SelectedItems.Cast<Podzadania>().ToList();
+            foreach (Podzadania zad in ZaznaczonePodzadania)
             {
-                db.Podzadania.Remove(zad);
-
-                db.SaveChanges();
+                LokalnePodzadania.Remove(zad);
             }
             int ktory = 1;
-            foreach (Podzadania podzadania in db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == zadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList())
+            foreach (Podzadania podzadania in LokalnePodzadania)
             {
                 podzadania.któreNaLiscie = ktory;
                 ktory++;
-                db.Attach(podzadania).State = EntityState.Modified;
 
             }
-            db.SaveChanges();
-            ListaKrokow.ItemsSource = db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == zadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList();
+            ListaKrokow.Items.Refresh();
         }
-
+        
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie);
+            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie, zadanie.Podzadania.Count());
             NowePodzadanie.Owner = this;
             if (NowePodzadanie.ShowDialog() == true)
             {
@@ -91,20 +94,23 @@ namespace ListaZadan
 
         private void DodawanieKategorii(object sender, RoutedEventArgs e)
         {
-            foreach (Kategoria zad in ListaNiedodanychKategorii.SelectedItems)
+            List<Kategoria> ZaznaczoneKategorie = ListaNiedodanychKategorii.SelectedItems.Cast<Kategoria>().ToList();
+            foreach (Kategoria zad in ZaznaczoneKategorie)
             {
                 Kategora_Zadanie NowaKategoria = new Kategora_Zadanie();
                 NowaKategoria.Zadanie = zadanie;
                 NowaKategoria.Kategoria = zad;
-                db.Kategoria_Zadanie.Add(NowaKategoria);
-                db.SaveChanges();
+                LokalnaListaNatezacychKategorii.Add(NowaKategoria);
+                LokalnaBazaNienalezacychKategorii.Remove(zad);
             }
-            OdswiezBazeKategorii();
+            ListaObecnychKategorii.Items.Refresh();
+            ListaNiedodanychKategorii.Items.Refresh();
+            
         }
+        
         private void OdswiezBazeKategorii()
         {
-            ListaObecnychKategorii.ItemsSource = db.Kategoria_Zadanie.Include(p => p.Zadanie).Include(p => p.Kategoria).Where(k => k.Zadanie.IdZadanie == zadanie.IdZadanie).ToList();
-            ListaNiedodanychKategorii.ItemsSource = db.Kategorie.Include(o => o.Kategora_Zadanie).Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie.IdZadanie == zadanie.IdZadanie && k.Kategoria.IdKategoria == p.IdKategoria))).ToList();
+            
         }
         private void WyborPrzedzialuCzasu(object sender, RoutedEventArgs e)
         {
@@ -134,9 +140,6 @@ namespace ListaZadan
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            var Zadanie=db.Zadania.FirstOrDefault(z => z == zadanie);
-            db.Zadania.Remove(Zadanie);
-            db.SaveChanges();
             this.Close();
         }
 

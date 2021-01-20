@@ -3,6 +3,7 @@ using ListaZadan.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,22 +24,26 @@ namespace ListaZadan
     {
         ListaZadanContext db { get; set; }
         private Zadanie EdytowaneZadanie { get; set; }
-        private Zadanie KopiaEdytowanegoZadania { get; set; }
+        private ObservableCollection<Podzadania> LokalnePodzadania { get; set; }
         public Edytuj_Zadanie(ListaZadanContext db, Zadanie zadanie)
         {
             InitializeComponent();
             this.db = db;
+            db.Zadania.Where(k => k.IdZadanie == zadanie.IdZadanie).Load();
+
             EdytowaneZadanie = zadanie;
-            KopiaEdytowanegoZadania = zadanie;
+
             OdswiezBazeKategorii();
-            ListaKrokow.ItemsSource = db.Podzadania.Include(i=>i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).ToList();  
+            db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z=>z.któreNaLiscie).Load();
+            LokalnePodzadania = db.Podzadania.Local.ToObservableCollection();
+            ListaKrokow.ItemsSource = LokalnePodzadania; 
             TrescZadania.Text = EdytowaneZadanie.Tresc;
             Piorytet.Value = EdytowaneZadanie.prorytet;
             DataOd.SelectedDate = EdytowaneZadanie.rozpoczecie;
             DataDo.SelectedDate = EdytowaneZadanie.zakonczenie;
 
         }
-
+        
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -69,20 +74,6 @@ namespace ListaZadan
                 DialogResult = true;
             }
         }
-
-        private void WyborPrzedzialuCzasu(object sender, RoutedEventArgs e)
-        {
-            if (PrzedzialCzasu.IsChecked == true)
-            {
-                OdKiedy.Visibility = Visibility.Visible;
-
-            }
-            else
-            {
-                OdKiedy.Visibility = Visibility.Collapsed;
-            }
-        }
-
         private void WyborDatyUkonczenia(object sender, RoutedEventArgs e)
         {
             if (PrzedzialCzasu.IsChecked == true)
@@ -122,58 +113,78 @@ namespace ListaZadan
 
         private void UsuwanieKategorii(object sender, RoutedEventArgs e)
         {
-            foreach (Kategora_Zadanie zad in ListaObecnychKategorii.SelectedItems)
+            List<Kategora_Zadanie> ZaznaczoneKategorie= ListaObecnychKategorii.SelectedItems.Cast<Kategora_Zadanie>().ToList(); ;
+            foreach (Kategora_Zadanie zad in ZaznaczoneKategorie)
             {
-                db.Kategoria_Zadanie.Remove(zad);
-                db.SaveChanges();
+               // LokalnaBazaNienalezacychKategorii.Add(zad.Kategoria);
+                LokalnaListaNatezacychKategorii.Remove(zad);
+                
             }
-            OdswiezBazeKategorii();
+            ListaObecnychKategorii.Items.Refresh();
+            ListaNiedodanychKategorii.Items.Refresh();
         }
         private void DodawanieKategorii(object sender, RoutedEventArgs e)
         {
-            foreach (Kategoria zad in ListaNiedodanychKategorii.SelectedItems)
+            List<Kategoria> ZaznaczoneKategorie = ListaNiedodanychKategorii.SelectedItems.Cast<Kategoria>().ToList(); 
+            foreach (Kategoria zad in ZaznaczoneKategorie)
             {
                 Kategora_Zadanie NowaKategoria = new Kategora_Zadanie();
                 NowaKategoria.Zadanie = EdytowaneZadanie;
                 NowaKategoria.Kategoria = zad;
-                db.Kategoria_Zadanie.Add(NowaKategoria);
-                db.SaveChanges();
+                LokalnaListaNatezacychKategorii.Add(NowaKategoria);
+                LokalnaBazaNienalezacychKategorii.Remove(zad);
             }
-            OdswiezBazeKategorii();
+            ListaObecnychKategorii.Items.Refresh();
+            ListaNiedodanychKategorii.Items.Refresh();
         }
+        private ObservableCollection<Kategora_Zadanie> LokalnaListaNatezacychKategorii { get; set; }
+        private ObservableCollection<Kategoria> LokalnaBazaNienalezacychKategorii { get; set; }
         private void OdswiezBazeKategorii()
         {
-            ListaObecnychKategorii.ItemsSource = db.Kategoria_Zadanie.Include(p => p.Zadanie).Include(p => p.Kategoria).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).ToList();
-            ListaNiedodanychKategorii.ItemsSource = db.Kategorie.Include(o => o.Kategora_Zadanie).Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria.IdKategoria == p.IdKategoria))).ToList();
+            db.Kategoria_Zadanie.Include(p => p.Zadanie).Include(p => p.Kategoria).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).Load() ;
+            LokalnaListaNatezacychKategorii= db.Kategoria_Zadanie.Local.ToObservableCollection();
+            ListaObecnychKategorii.ItemsSource = LokalnaListaNatezacychKategorii;
+
+            db.Kategorie.Include(o => o.Kategora_Zadanie).Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria.IdKategoria == p.IdKategoria))).Load();
+            LokalnaBazaNienalezacychKategorii= db.Kategorie.Local.ToObservableCollection();
+            ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
         }
 
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, EdytowaneZadanie);
+            var NowePodzadanie = new Dodaj_Podzadanie(db, EdytowaneZadanie, LokalnePodzadania.Count());
             NowePodzadanie.Owner = this;
+
             if(NowePodzadanie.ShowDialog()==true)
             {
-                ListaKrokow.ItemsSource= db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z=>z.któreNaLiscie).ToList();
+                
+                if (NowePodzadanie.Podzadanie.któreNaLiscie <= LokalnePodzadania.Count())
+                {
+                    foreach (Podzadania podzadania in LokalnePodzadania.Where(z => z.któreNaLiscie >= NowePodzadanie.Podzadanie.któreNaLiscie))
+                    {
+                        podzadania.któreNaLiscie++;
+                    }
+                }
+                LokalnePodzadania.Add(NowePodzadanie.Podzadanie);
+                ListaKrokow.Items.Refresh();
             }
         }
 
         private void UsunPodzadania(object sender, RoutedEventArgs e)
         {
-            foreach (Podzadania zad in ListaKrokow.SelectedItems)
+            List<Podzadania> ZaznaczonePodzadania = ListaKrokow.SelectedItems.Cast<Podzadania>().ToList();
+            foreach (Podzadania zad in ZaznaczonePodzadania)
             {
-                db.Podzadania.Remove(zad);
-                
-                db.SaveChanges();
+                LokalnePodzadania.Remove(zad);
             }
             int ktory = 1;
-            foreach (Podzadania podzadania in db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList())
+            foreach (Podzadania podzadania in LokalnePodzadania)
             {
                 podzadania.któreNaLiscie=ktory;
                 ktory++;
-                db.Attach(podzadania).State = EntityState.Modified;
                 
-            }db.SaveChanges();
-            ListaKrokow.ItemsSource = db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList();
+            }
+            ListaKrokow.Items.Refresh();
         }
     }
 }

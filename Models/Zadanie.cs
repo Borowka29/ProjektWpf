@@ -15,8 +15,8 @@ namespace ListaZadan.Models
         public double prorytet { get; set; }
         public DateTime rozpoczecie { get; set; }
         public DateTime zakonczenie { get; set; }
-        public virtual ICollection<Kategora_Zadanie> Kategora_Zadanie { get; private set; } = new ObservableCollection<Kategora_Zadanie>();
-        public virtual ICollection<Podzadania> Podzadania { get; private set; } = new ObservableCollection<Podzadania>();
+        public virtual ICollection<Kategora_Zadanie> Kategora_Zadanie { get; set; } //= new ObservableCollection<Kategora_Zadanie>();
+        public virtual ICollection<Podzadania> Podzadania { get; set; } //= new ObservableCollection<Podzadania>();
 
     }
 }

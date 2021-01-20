@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
-        Title="Lista zadań" Height="504" Width="642">
+        Title="Lista zadań" Height="504" Width="642" >
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Plik">
