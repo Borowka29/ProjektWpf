@@ -1,6 +1,8 @@
 ﻿using ListaZadan.DAL;
 using ListaZadan.Models;
+using ListaZadan.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,14 +33,11 @@ namespace ListaZadan
         {
             InitializeComponent();
             db = new ListaZadanContext();
-            TasksListView.ItemsSource = db.Zadania.Include(z=>z.Kategora_Zadanie).ToList();
-            
+            TasksListView.ItemsSource = db.Zadania.Include(z=>z.Kategora_Zadanie).ToList();            
         }
 
         private void TasksListViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-
-
             // Nie wiem czemu nie działa poniższy kod 
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             //GridViewColumnHeader column = (sender as GridViewColumnHeader);
@@ -86,8 +85,6 @@ namespace ListaZadan
                 var zadanie = db.Zadania.FirstOrDefault(z => z == zad);
                 db.Zadania.Remove(zadanie);
                 db.SaveChanges();
-
-
             }
             TasksListView.ItemsSource = db.Zadania.ToList();
         }
@@ -127,6 +124,53 @@ namespace ListaZadan
                 TasksListView.ItemsSource = db.Zadania.ToList();
             }
             
+        }
+
+        private void ExportToPDF_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog savePdfDialog = new SaveFileDialog();
+            savePdfDialog.Filter = "Dokument PDF (*.pdf)|*.pdf";
+
+            if (savePdfDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                ExportPDF.Export(db, savePdfDialog.FileName);
+                this.IsEnabled = true;
+            }
+            else
+                return;
+        }
+
+        private void ExportToXML_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveXMLDialog = new SaveFileDialog();
+            saveXMLDialog.Filter = "Plik danych (*.zad)|*.zad";
+
+            if (saveXMLDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                ExportXML.Export(db, saveXMLDialog.FileName);
+                this.IsEnabled = true;
+            }
+            else
+                return;
+        }
+
+        private void ImportFromXML_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openXMLDialog = new OpenFileDialog();
+            openXMLDialog.Filter = "Plik danych (*.zad)|*.zad";
+
+            if (openXMLDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                ExportXML.Import(db, openXMLDialog.FileName);
+                this.IsEnabled = true;
+            }
+            else
+                return;
+
+            TasksListView.ItemsSource = db.Zadania.ToList();
         }
 
         //private void NewTask_Click(object sender, RoutedEventArgs e)
