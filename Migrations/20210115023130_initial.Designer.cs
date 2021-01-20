@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ListaZadan.Migrations
 {
     [DbContext(typeof(ListaZadanContext))]
-    [Migration("20201228153938_initial")]
+    [Migration("20210115023130_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace ListaZadan.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("ListaZadan.Kategora_Zadanie", b =>
+            modelBuilder.Entity("ListaZadan.Models.Kategora_Zadanie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace ListaZadan.Migrations
                     b.ToTable("Kategoria_Zadanie");
                 });
 
-            modelBuilder.Entity("ListaZadan.Kategoria", b =>
+            modelBuilder.Entity("ListaZadan.Models.Kategoria", b =>
                 {
                     b.Property<int>("IdKategoria")
                         .ValueGeneratedOnAdd()
@@ -68,8 +68,8 @@ namespace ListaZadan.Migrations
                     b.Property<int?>("ZadanieIdZadanie")
                         .HasColumnType("int");
 
-                    b.Property<string>("któreNaLiscie")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("któreNaLiscie")
+                        .HasColumnType("int");
 
                     b.Property<string>("opis")
                         .HasColumnType("nvarchar(max)");
@@ -81,7 +81,7 @@ namespace ListaZadan.Migrations
                     b.ToTable("Podzadania");
                 });
 
-            modelBuilder.Entity("ListaZadan.Zadanie", b =>
+            modelBuilder.Entity("ListaZadan.Models.Zadanie", b =>
                 {
                     b.Property<int>("IdZadanie")
                         .ValueGeneratedOnAdd()
@@ -105,13 +105,13 @@ namespace ListaZadan.Migrations
                     b.ToTable("Zadania");
                 });
 
-            modelBuilder.Entity("ListaZadan.Kategora_Zadanie", b =>
+            modelBuilder.Entity("ListaZadan.Models.Kategora_Zadanie", b =>
                 {
-                    b.HasOne("ListaZadan.Kategoria", "Kategoria")
+                    b.HasOne("ListaZadan.Models.Kategoria", "Kategoria")
                         .WithMany("Kategora_Zadanie")
                         .HasForeignKey("KategoriaIdKategoria");
 
-                    b.HasOne("ListaZadan.Zadanie", "Zadanie")
+                    b.HasOne("ListaZadan.Models.Zadanie", "Zadanie")
                         .WithMany("Kategora_Zadanie")
                         .HasForeignKey("ZadanieIdZadanie");
 
@@ -122,19 +122,19 @@ namespace ListaZadan.Migrations
 
             modelBuilder.Entity("ListaZadan.Models.Podzadania", b =>
                 {
-                    b.HasOne("ListaZadan.Zadanie", "Zadanie")
+                    b.HasOne("ListaZadan.Models.Zadanie", "Zadanie")
                         .WithMany("Podzadania")
                         .HasForeignKey("ZadanieIdZadanie");
 
                     b.Navigation("Zadanie");
                 });
 
-            modelBuilder.Entity("ListaZadan.Kategoria", b =>
+            modelBuilder.Entity("ListaZadan.Models.Kategoria", b =>
                 {
                     b.Navigation("Kategora_Zadanie");
                 });
 
-            modelBuilder.Entity("ListaZadan.Zadanie", b =>
+            modelBuilder.Entity("ListaZadan.Models.Zadanie", b =>
                 {
                     b.Navigation("Kategora_Zadanie");
 

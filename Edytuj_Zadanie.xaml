@@ -127,7 +127,7 @@
                 </Button.ToolTip>
             </Button>
         </WrapPanel>
-        <ListView Name="ListaKrokow"  Margin="5" Width="auto" SelectionChanged="CzyMoznaUsunacPodzadanie">
+        <ListView Name="ListaKrokow"  Margin="5"  SelectionChanged="CzyMoznaUsunacPodzadanie" >
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridView.Columns >

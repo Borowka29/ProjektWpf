@@ -13,7 +13,7 @@
         </WrapPanel>
         
         <DockPanel DockPanel.Dock="Bottom">
-            <Label DockPanel.Dock="Left" Content="Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
+            <Label DockPanel.Dock="Left" Content="_Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
             <Label DockPanel.Dock="Right" Name="ilePodzadan"></Label>
             <Label DockPanel.Dock="Right" >Na liście jest:</Label>
             <TextBox Name="ktoreNaLiscie" VerticalContentAlignment="Center"></TextBox>
