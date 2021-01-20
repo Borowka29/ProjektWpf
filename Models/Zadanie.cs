@@ -17,6 +17,5 @@ namespace ListaZadan.Models
         public DateTime zakonczenie { get; set; }
         public virtual ICollection<Kategora_Zadanie> Kategora_Zadanie { get; private set; } = new ObservableCollection<Kategora_Zadanie>();
         public virtual ICollection<Podzadania> Podzadania { get; private set; } = new ObservableCollection<Podzadania>();
-
     }
 }

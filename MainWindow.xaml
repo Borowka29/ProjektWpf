@@ -13,6 +13,7 @@
                 <MenuItem Header="_Edytuj" />
                 <MenuItem Header="_Otwórz" />
                 <MenuItem Header="_Zapisz" />
+                <MenuItem Header="_Eksportuj do pliku PDF" Click="ExportToPDF_Click"/>
                 <Separator />
                 <MenuItem Header="_Zakończ" />
             </MenuItem>
