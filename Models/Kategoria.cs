@@ -15,6 +15,6 @@ namespace ListaZadan.Models
         public int IdKategoria { get; set; }
         [DataMember]
         public string Typ { get; set; }
-        public virtual ICollection<Kategora_Zadanie> Kategora_Zadanie { get; private set; } = new ObservableCollection<Kategora_Zadanie>();
+        public virtual ICollection<Kategora_Zadanie> Kategora_Zadanie { get; set; }
     }
 }

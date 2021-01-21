@@ -1,0 +1,41 @@
+﻿<Window x:Class="ListaZadan.EdycjaKategorii"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ListaZadan"
+        mc:Ignorable="d"
+        Title="Edytowanie kategorii" Height="400" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ListView Name="KategorieListView" SelectionChanged="KategorieListView_SelectionChanged" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Typ}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader>
+                                    Nazwa
+                                </GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>            
+        </ListView>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="5" Padding="20, 5" Grid.Column="0" Name="DodajButton" Click="DodajButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Center">Dodaj</Button>
+            <Button Margin="5" Padding="20, 5" Grid.Column="1" Name="EdytujButton" Click="EdytujButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Center" IsEnabled="False">Edytuj</Button>
+            <Button Margin="5" Padding="20, 5" Grid.Column="2" Name="UsuńButton" Click="UsuńButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Center" IsEnabled="False">Usuń</Button>
+        </Grid>
+    </Grid>
+</Window>

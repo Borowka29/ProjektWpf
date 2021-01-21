@@ -1,5 +1,4 @@
-﻿using ListaZadan.DAL;
-using ListaZadan.Models;
+﻿using ListaZadan.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,22 +14,23 @@ using System.Windows.Shapes;
 namespace ListaZadan
 {
     /// <summary>
-    /// Interaction logic for Tworzenie_Kategorii.xaml
+    /// Logika interakcji dla klasy Edycja_Kategorii.xaml
     /// </summary>
-    public partial class Tworzenie_Kategorii : Window
+    public partial class Edycja_Kategorii : Window
     {
-        private readonly ListaZadanContext db;
-        public Tworzenie_Kategorii(ListaZadanContext db)
+        public Kategoria Kategoria { get; set; }
+        public Edycja_Kategorii(Kategoria kategoria)
         {
-            this.db = db;
             InitializeComponent();
+            Kategoria = kategoria;
+            trescKategoriiTextBox.Text = Kategoria.Typ;
         }
 
-        private void DodajButton_Click(object sender, RoutedEventArgs e)
+        private void ZapiszButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(trescKategoriiTextBox.Text))
+            if(!string.IsNullOrEmpty(trescKategoriiTextBox.Text))
             {
-                db.Kategorie.Add(new Kategoria() { Typ = trescKategoriiTextBox.Text });
+                Kategoria.Typ = trescKategoriiTextBox.Text;
                 DialogResult = true;
                 Close();
             }

@@ -20,35 +20,32 @@ namespace ListaZadan
     /// <summary>
     /// Interaction logic for Dodaj_Podzadanie.xaml
     /// </summary>
-   
+
     public partial class Dodaj_Podzadanie : Window
     {
-        ListaZadanContext db { get; set; }
         public Podzadania Podzadanie { get; set; }
         private Zadanie zadanie { get; set; }
         private int IlePodzadan { get; set; }
 
-        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie, int ile)
+        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie)
         {
             InitializeComponent();
             Podzadanie = new Podzadania();
-            this.db = db;
             this.zadanie = zadanie;
-            ilePodzadan.Content = ile;
-            IlePodzadan = ile;
-            
+            IlePodzadan = zadanie.Podzadania.Count();
+            ilePodzadan.Content = IlePodzadan;
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if(TrescPodzadania.Text.Length>0 && ktoreNaLiscie.Text!=null && (Regex.IsMatch(ktoreNaLiscie.Text, @"^\d+$")) ==true)
+            if (TrescPodzadania.Text.Length > 0 && ktoreNaLiscie.Text != null && (Regex.IsMatch(ktoreNaLiscie.Text, @"^\d+$")) == true)
             {
-                if(int.Parse(ktoreNaLiscie.Text)>0 && (int.Parse(ktoreNaLiscie.Text)-1)<= IlePodzadan)
+                if (int.Parse(ktoreNaLiscie.Text) > 0 && (int.Parse(ktoreNaLiscie.Text) - 1) <= IlePodzadan)
                 {
-                    
                     Podzadanie.Zadanie = zadanie;
                     Podzadanie.opis = TrescPodzadania.Text.ToString();
                     Podzadanie.któreNaLiscie = Convert.ToInt32(ktoreNaLiscie.Text);
+                    zadanie.Podzadania.Add(Podzadanie);
                     DialogResult = true;
                 }
                 else
@@ -56,12 +53,12 @@ namespace ListaZadan
                     MessageBox.Show("Podany element może się znajdować na pozycji od 1 do ilości elementów powiekszonej o 1", "Nieprawidłowe dane", MessageBoxButton.OK, MessageBoxImage.Information);
                     ktoreNaLiscie.Focus();
                 }
-                
+
             }
             else
             {
-                MessageBox.Show("Podzadanie jest puste","Nieprawidłowe dane", MessageBoxButton.OK, MessageBoxImage.Information);
-                    TrescPodzadania.Focus();
+                MessageBox.Show("Podzadanie jest puste", "Nieprawidłowe dane", MessageBoxButton.OK, MessageBoxImage.Information);
+                TrescPodzadania.Focus();
 
             }
         }

@@ -39,6 +39,11 @@ namespace ListaZadan
             Piorytet.Value = PodgladaneZadanie.prorytet;
             DataOd.Content = PodgladaneZadanie.rozpoczecie;
             DataDo.Content = PodgladaneZadanie.zakonczenie;
+            if(PodgladaneZadanie.rozpoczecie == null)
+                OdKiedy.Visibility = Visibility.Collapsed;
+            else
+                OdKiedy.Visibility = Visibility.Visible;
+
         }
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
