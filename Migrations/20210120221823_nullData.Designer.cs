@@ -4,14 +4,16 @@ using ListaZadan.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ListaZadan.Migrations
 {
     [DbContext(typeof(ListaZadanContext))]
-    partial class ListaZadanContextModelSnapshot : ModelSnapshot
+    [Migration("20210120221823_nullData")]
+    partial class nullData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,10 @@ namespace ListaZadan.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("KategoriaIdKategoria")
+                    b.Property<int?>("KategoriaIdKategoria")
                         .HasColumnType("int");
 
-                    b.Property<int>("ZadanieIdZadanie")
+                    b.Property<int?>("ZadanieIdZadanie")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -107,15 +109,11 @@ namespace ListaZadan.Migrations
                 {
                     b.HasOne("ListaZadan.Models.Kategoria", "Kategoria")
                         .WithMany("Kategora_Zadanie")
-                        .HasForeignKey("KategoriaIdKategoria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KategoriaIdKategoria");
 
                     b.HasOne("ListaZadan.Models.Zadanie", "Zadanie")
                         .WithMany("Kategora_Zadanie")
-                        .HasForeignKey("ZadanieIdZadanie")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ZadanieIdZadanie");
 
                     b.Navigation("Kategoria");
 

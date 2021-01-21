@@ -17,32 +17,57 @@
                 <Separator />
                 <MenuItem Header="_Zakończ" />
             </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Command="Cut" />
-                <MenuItem Command="Copy" />
-                <MenuItem Command="Paste" />
+            <MenuItem Header="_Edytuj">
+                <MenuItem Header="_Wytnij" Command="Cut" />
+                <MenuItem Header="_Kopiuj" Command="Copy" />
+                <MenuItem Header="Wk_lej" Command="Paste" />
             </MenuItem>
         </Menu>
         <Grid>
             <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <DockPanel Grid.Row="0">
-                    <Label VerticalContentAlignment="Center" Height="auto">Wyszukaj zadanie:</Label>
-                    <TextBox Name="SzukajZadania"  VerticalContentAlignment="Center" Margin="5" Padding="5" TextChanged="Szukaj"></TextBox>
-                </DockPanel>
-                <ComboBox  Name="Grupowanie" Grid.Row="1" SelectedIndex="0" Margin="5" Padding="5" SelectionChanged="ZmianaGrupowania">
-                    <ComboBoxItem Name="BezGrupowania">Bez grupowania</ComboBoxItem>
-                    <ComboBoxItem Name="WedlugPiorytetu">Grupuj według piorytetu</ComboBoxItem>
-                    <ComboBoxItem Name="WedlugDatyKoncowej" >Grupuj według daty zakończenia</ComboBoxItem>
-                </ComboBox>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0">
+                <Label VerticalContentAlignment="Center" Height="auto">Wyszukaj zadanie:</Label>
+                <TextBox Name="SzukajZadania"  VerticalContentAlignment="Center" Margin="5" Padding="5" TextChanged="Szukaj"></TextBox>
+            </DockPanel>
+            <ComboBox  Name="Grupowanie" Grid.Row="1" SelectedIndex="0" Margin="5" Padding="5" SelectionChanged="ZmianaGrupowania">
+                <ComboBoxItem Name="BezGrupowania">Bez grupowania</ComboBoxItem>
+                <ComboBoxItem Name="WedlugPiorytetu">Grupuj według piorytetu</ComboBoxItem>
+                <ComboBoxItem Name="WedlugDatyKoncowej" >Grupuj według daty zakończenia</ComboBoxItem>
+            </ComboBox>
             <ListView Grid.Row="2" Name="TasksListView" Margin="5" Width="auto" SelectionChanged="ListboxSelectionChanged">
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="True">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" 
+                                                                   Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
-                        <GridView.Columns >
+                        <GridView.Columns>
                             <GridViewColumn Width="30" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -97,9 +122,10 @@
             </ListView>
             <WrapPanel Grid.Row="3">
                 <Button Grid.Row="3" Name="UsunZadanie" ToolTip="Usuniesz zaznaczone elementy na swojej liście" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
-                <Button Grid.Row="3" Name="DodajZadanie" ToolTip="Stwórz nowe zadanie na swojej liście" Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Dodajzadania</Button>
+                <Button Grid.Row="3" Name="DodajZadanie" ToolTip="Stwórz nowe zadanie na swojej liście" Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" IsDefault="True">Dodaj zadania</Button>
+                <Button Grid.Row="3" Name="EdytujKategorie" ToolTip="Edytuj kategorie używane do grupowania zadań" Click="EdytujKategorie_Click" HorizontalAlignment="Right" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Edytuj kategorie</Button>
             </WrapPanel>
-            
+
         </Grid>
     </DockPanel>
 </Window>
