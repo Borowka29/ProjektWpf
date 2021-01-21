@@ -10,7 +10,10 @@
         <Style TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Arial"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -97,8 +100,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <RadioButton Name="PrzedzialCzasu" IsChecked="True" Click="WyborPrzedzialuCzasu">Przedział Czasu</RadioButton>
-            <RadioButton Grid.Column="1" Name="DataUkonczenia"  Click="WyborDatyUkonczenia">Data Ukończenia</RadioButton>
+            <RadioButton Margin="5" Name="PrzedzialCzasu" IsChecked="True" Click="WyborPrzedzialuCzasu">Przedział Czasu</RadioButton>
+            <RadioButton Margin="5" Grid.Column="1" Name="DataUkonczenia"  Click="WyborDatyUkonczenia">Data Ukończenia</RadioButton>
             <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
 
                 <WrapPanel HorizontalAlignment="Center">

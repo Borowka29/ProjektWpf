@@ -5,12 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
-        Title="Lista zadań" Height="504" Width="642" >
+        Title="Lista zadań" Height="500" Width="800" >
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontSize" Value="14"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -123,9 +122,9 @@
                 </ListView.View>
             </ListView>
             <WrapPanel Grid.Row="3">
-                <Button Grid.Row="3" Name="UsunZadanie" ToolTip="Usuniesz zaznaczone elementy na swojej liście" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Usuń zadania</Button>
-                <Button Grid.Row="3" Name="DodajZadanie" ToolTip="Stwórz nowe zadanie na swojej liście" Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" IsDefault="True">Dodaj zadania</Button>
-                <Button Grid.Row="3" Name="EdytujKategorie" ToolTip="Edytuj kategorie używane do grupowania zadań" Click="EdytujKategorie_Click" HorizontalAlignment="Right" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White">Edytuj kategorie</Button>
+                <Button Grid.Row="3" Name="UsunZadanie" ToolTip="Usuniesz zaznaczone elementy na swojej liście" IsEnabled="False" Click="UsunZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5">Usuń zadania</Button>
+                <Button Grid.Row="3" Name="DodajZadanie" ToolTip="Stwórz nowe zadanie na swojej liście" Click="DodajZadania_Click" HorizontalAlignment="Left" Margin="10,2" Padding="5" IsDefault="True">Dodaj zadania</Button>
+                <Button Grid.Row="3" Name="EdytujKategorie" ToolTip="Edytuj kategorie używane do grupowania zadań" Click="EdytujKategorie_Click" HorizontalAlignment="Right" Margin="10,2" Padding="5" >Edytuj kategorie</Button>
             </WrapPanel>
 
         </Grid>

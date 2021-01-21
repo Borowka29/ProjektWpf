@@ -35,6 +35,7 @@ namespace ListaZadan
             db = new ListaZadanContext();
 
             db.Kategoria_Zadanie.Include(k => k.Zadanie).Include(k => k.Kategoria).Load();
+            db.Zadania.Include(z => z.Podzadania).Load();
 
             TasksListView.ItemsSource = db.Zadania.Include(z => z.Kategora_Zadanie).ToList();
 

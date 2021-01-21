@@ -32,7 +32,14 @@ namespace ListaZadan
             InitializeComponent();
             Podzadanie = new Podzadania();
             this.zadanie = zadanie;
-            IlePodzadan = zadanie.Podzadania.Count();
+            if(zadanie.Podzadania != null)
+            {
+                IlePodzadan = zadanie.Podzadania.Count();
+            }
+            else
+            {
+                IlePodzadan = 0;
+            }
             ilePodzadan.Content = IlePodzadan;
         }
 

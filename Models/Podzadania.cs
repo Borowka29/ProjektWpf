@@ -17,6 +17,7 @@ namespace ListaZadan.Models
         [DataMember]
         public int któreNaLiscie { get; set; }
         [DataMember]
-        public virtual Zadanie Zadanie { get; set; }
+        [Required]
+        public Zadanie Zadanie { get; set; }
     }
 }

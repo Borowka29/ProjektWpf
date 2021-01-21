@@ -24,7 +24,7 @@ namespace ListaZadan
     {
         ListaZadanContext db { get; set; }
         private Zadanie EdytowaneZadanie { get; set; }
-        private ObservableCollection<Podzadania> LokalnePodzadania { get; set; }
+        private List<Podzadania> LokalnePodzadania { get; set; }
         public Edytuj_Zadanie(ListaZadanContext db, Zadanie zadanie)
         {
             InitializeComponent();
@@ -34,8 +34,8 @@ namespace ListaZadan
             EdytowaneZadanie = zadanie;
 
             OdswiezBazeKategorii();
-            db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).Load();
-            LokalnePodzadania = db.Podzadania.Local.ToObservableCollection();
+            db.Podzadania.Include(i => i.Zadanie).Load();
+            LokalnePodzadania = db.Podzadania.Local.Where(k => k.Zadanie.IdZadanie == EdytowaneZadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList();
             ListaKrokow.ItemsSource = LokalnePodzadania;
             TrescZadania.Text = EdytowaneZadanie.Tresc;
             Piorytet.Value = EdytowaneZadanie.prorytet;
@@ -156,7 +156,7 @@ namespace ListaZadan
 
             db.Kategorie.Include(o => o.Kategora_Zadanie).Load();
             LokalnaBazaNienalezacychKategorii = db.Kategorie.Local
-                .Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie?.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria.IdKategoria == p.IdKategoria))).ToList();
+                .Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie?.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria?.IdKategoria == p.IdKategoria))).ToList();
             ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
         }
 
@@ -185,6 +185,7 @@ namespace ListaZadan
             List<Podzadania> ZaznaczonePodzadania = ListaKrokow.SelectedItems.Cast<Podzadania>().ToList();
             foreach (Podzadania zad in ZaznaczonePodzadania)
             {
+                EdytowaneZadanie.Podzadania.Remove(zad);
                 LokalnePodzadania.Remove(zad);
             }
             int ktory = 1;
@@ -192,7 +193,12 @@ namespace ListaZadan
             {
                 podzadania.któreNaLiscie = ktory;
                 ktory++;
-
+            }
+            ktory = 1;
+            foreach (Podzadania podzadania in EdytowaneZadanie.Podzadania)
+            {
+                podzadania.któreNaLiscie = ktory;
+                ktory++;
             }
             ListaKrokow.Items.Refresh();
         }
