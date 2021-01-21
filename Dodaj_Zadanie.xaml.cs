@@ -89,7 +89,7 @@ namespace ListaZadan
         
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie);
+            Dodaj_Podzadanie NowePodzadanie = new Dodaj_Podzadanie(db, zadanie, LokalnePodzadania.Count());
             NowePodzadanie.Owner = this;
             if (NowePodzadanie.ShowDialog() == true)
             {

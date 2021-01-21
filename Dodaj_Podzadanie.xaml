@@ -17,7 +17,6 @@
             <Button Name="OKButton" Margin="5" Padding="15,3" IsDefault="True" Click="OKButton_Click">Stwórz</Button>
             <Button Name="CancelButton" Margin="5" Padding="15,3" IsCancel="True" Click="CancelButton_Click">Anuluj</Button>
         </WrapPanel>
-        
         <DockPanel DockPanel.Dock="Bottom">
             <Label Margin="5" DockPanel.Dock="Left" Content="_Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
             <Label Margin="5" DockPanel.Dock="Right" Name="ilePodzadan"></Label>

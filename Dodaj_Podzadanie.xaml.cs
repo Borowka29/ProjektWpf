@@ -27,10 +27,11 @@ namespace ListaZadan
         private Zadanie zadanie { get; set; }
         private int IlePodzadan { get; set; }
 
-        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie)
+        public Dodaj_Podzadanie(ListaZadanContext db, Zadanie zadanie, int ile)
         {
             InitializeComponent();
             Podzadanie = new Podzadania();
+            Podzadanie.Zadanie = zadanie;
             this.zadanie = zadanie;
             if(zadanie.Podzadania != null)
             {
@@ -52,6 +53,8 @@ namespace ListaZadan
                     Podzadanie.Zadanie = zadanie;
                     Podzadanie.opis = TrescPodzadania.Text.ToString();
                     Podzadanie.któreNaLiscie = Convert.ToInt32(ktoreNaLiscie.Text);
+                    if (zadanie.Podzadania == null)
+                        zadanie.Podzadania = new List<Podzadania>();
                     zadanie.Podzadania.Add(Podzadanie);
                     DialogResult = true;
                 }

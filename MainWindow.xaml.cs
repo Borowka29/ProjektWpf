@@ -67,20 +67,24 @@ namespace ListaZadan
         {
             Zadanie zadanie = (sender as FrameworkElement).DataContext as Zadanie;
             var PodgladZadania = new Szczegoly(db, zadanie);
+            this.Visibility = Visibility.Collapsed;
             PodgladZadania.Owner = this;
             PodgladZadania.ShowDialog();
+            this.Visibility = Visibility.Visible;
         }
 
         private void EdytujZadanie_Click(object sender, RoutedEventArgs e)
         {
             Zadanie zadanie = (sender as FrameworkElement).DataContext as Zadanie;
             var EdycjaZadania = new Edytuj_Zadanie(db, zadanie);
+            this.Visibility = Visibility.Collapsed;
             EdycjaZadania.Owner = this;
             if (EdycjaZadania.ShowDialog() == true)
             {
                 TasksListView.Items.Refresh();
                 grupuj();
             }
+            this.Visibility = Visibility.Visible;
         }
 
         private void UsunZadania_Click(object sender, RoutedEventArgs e)
@@ -151,11 +155,13 @@ namespace ListaZadan
         private void DodajZadania_Click(object sender, RoutedEventArgs e)
         {
             var DodawanieZadania = new Dodaj_Zadanie(db);
+            this.Visibility = Visibility.Collapsed;
             DodawanieZadania.Owner = this;
             if (DodawanieZadania.ShowDialog() == true)
             {
                 grupuj();
             }
+            this.Visibility = Visibility.Visible;
         }
 
         private void ExportToPDF_Click(object sender, RoutedEventArgs e)

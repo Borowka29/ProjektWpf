@@ -162,20 +162,24 @@ namespace ListaZadan
 
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, EdytowaneZadanie);
+            var NowePodzadanie = new Dodaj_Podzadanie(db, EdytowaneZadanie, LokalnePodzadania.Count());
             NowePodzadanie.Owner = this;
 
             if (NowePodzadanie.ShowDialog() == true)
             {
-
                 if (NowePodzadanie.Podzadanie.któreNaLiscie <= LokalnePodzadania.Count())
                 {
                     foreach (Podzadania podzadania in LokalnePodzadania.Where(z => z.któreNaLiscie >= NowePodzadanie.Podzadanie.któreNaLiscie))
                     {
                         podzadania.któreNaLiscie++;
                     }
+                    foreach (Podzadania podzadania in EdytowaneZadanie.Podzadania.Where(z => z.któreNaLiscie >= NowePodzadanie.Podzadanie.któreNaLiscie))
+                    {
+                        podzadania.któreNaLiscie++;
+                    }
                 }
                 LokalnePodzadania.Add(NowePodzadanie.Podzadanie);
+                EdytowaneZadanie.Podzadania.Add(NowePodzadanie.Podzadanie);
                 ListaKrokow.Items.Refresh();
             }
         }
@@ -187,6 +191,7 @@ namespace ListaZadan
             {
                 EdytowaneZadanie.Podzadania.Remove(zad);
                 LokalnePodzadania.Remove(zad);
+                EdytowaneZadanie.Podzadania.Remove(zad);
             }
             int ktory = 1;
             foreach (Podzadania podzadania in LokalnePodzadania)
