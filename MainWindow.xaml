@@ -9,18 +9,13 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Plik">
-                <MenuItem Header="_Nowy" />
-                <MenuItem Header="_Edytuj" />
+                <MenuItem Header="_Nowy" Click="DodajZadania_Click"/>
+                <MenuItem Header="_Edytuj" Name="EdytujMenuItem" Click="EdytujZadanie_Click" IsEnabled="False"/>
                 <MenuItem Header="_Otwórz" Click="ImportFromXML_Click"/>
                 <MenuItem Header="_Zapisz" Click="ExportToXML_Click"/>
                 <MenuItem Header="_Eksportuj do pliku PDF" Click="ExportToPDF_Click"/>
                 <Separator />
-                <MenuItem Header="_Zakończ" />
-            </MenuItem>
-            <MenuItem Header="_Edytuj">
-                <MenuItem Header="_Wytnij" Command="Cut" />
-                <MenuItem Header="_Kopiuj" Command="Copy" />
-                <MenuItem Header="Wk_lej" Command="Paste" />
+                <MenuItem Header="_Zakończ" Click="Zakoncz_Click"/>
             </MenuItem>
         </Menu>
         <Grid>

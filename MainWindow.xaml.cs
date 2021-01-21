@@ -75,7 +75,7 @@ namespace ListaZadan
             Zadanie zadanie = (sender as FrameworkElement).DataContext as Zadanie;
             var EdycjaZadania = new Edytuj_Zadanie(db, zadanie);
             EdycjaZadania.Owner = this;
-            if(EdycjaZadania.ShowDialog() == true)
+            if (EdycjaZadania.ShowDialog() == true)
             {
                 TasksListView.Items.Refresh();
                 grupuj();
@@ -84,7 +84,7 @@ namespace ListaZadan
 
         private void UsunZadania_Click(object sender, RoutedEventArgs e)
         {
-            foreach(Zadanie zad in TasksListView.SelectedItems)
+            foreach (Zadanie zad in TasksListView.SelectedItems)
             {
                 db.Zadania.Remove(zad);
                 db.SaveChanges();
@@ -95,9 +95,19 @@ namespace ListaZadan
         private void ListboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TasksListView.SelectedIndex >= 0)
+            {
                 UsunZadanie.IsEnabled = true;
+                if (TasksListView.SelectedItems.Count == 1)
+                    EdytujMenuItem.IsEnabled = true;
+                else
+                    EdytujMenuItem.IsEnabled = false;
+
+            }
             else
+            {
                 UsunZadanie.IsEnabled = false;
+                EdytujMenuItem.IsEnabled = false;
+            }
         }
 
         private void ZmianaGrupowania(object sender, SelectionChangedEventArgs e)
@@ -141,10 +151,10 @@ namespace ListaZadan
         {
             var DodawanieZadania = new Dodaj_Zadanie(db);
             DodawanieZadania.Owner = this;
-            if(DodawanieZadania.ShowDialog() == true)
+            if (DodawanieZadania.ShowDialog() == true)
             {
                 grupuj();
-            }            
+            }
         }
 
         private void ExportToPDF_Click(object sender, RoutedEventArgs e)
@@ -199,6 +209,11 @@ namespace ListaZadan
             EdycjaKategorii w = new EdycjaKategorii(db);
             w.ShowDialog();
             grupuj();
+        }
+
+        private void Zakoncz_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
     public class SortAdorner : Adorner
