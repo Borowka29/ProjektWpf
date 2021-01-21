@@ -31,6 +31,7 @@ namespace ListaZadan
         {
             InitializeComponent();
             Podzadanie = new Podzadania();
+            Podzadanie.Zadanie = zadanie;
             this.zadanie = zadanie;
             ilePodzadan.Content = ile;
             IlePodzadan = ile;
@@ -42,10 +43,12 @@ namespace ListaZadan
             {
                 if (int.Parse(ktoreNaLiscie.Text) > 0 && (int.Parse(ktoreNaLiscie.Text) - 1) <= IlePodzadan)
                 {
-
                     Podzadanie.Zadanie = zadanie;
                     Podzadanie.opis = TrescPodzadania.Text.ToString();
                     Podzadanie.któreNaLiscie = Convert.ToInt32(ktoreNaLiscie.Text);
+                    if (zadanie.Podzadania == null)
+                        zadanie.Podzadania = new List<Podzadania>();
+                    zadanie.Podzadania.Add(Podzadanie);
                     DialogResult = true;
                 }
                 else

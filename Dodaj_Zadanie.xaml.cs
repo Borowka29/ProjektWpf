@@ -24,7 +24,7 @@ namespace ListaZadan
     {
         ListaZadanContext db { get; set; }
         public Zadanie zadanie { get; set; }
-        private ObservableCollection<Podzadania> LokalnePodzadania { get; set; }
+        private List<Podzadania> LokalnePodzadania { get; set; }
         private List<Kategora_Zadanie> LokalnaListaNalezacychKategorii { get; set; } = new List<Kategora_Zadanie>();
         private List<Kategoria> LokalnaBazaNienalezacychKategorii { get; set; }
 
@@ -46,6 +46,8 @@ namespace ListaZadan
 
             LokalnaBazaNienalezacychKategorii = db.Kategorie.Local.ToList();
             ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
+
+            LokalnePodzadania = zadanie.Podzadania.Cast<Podzadania>().ToList();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -87,7 +89,7 @@ namespace ListaZadan
         
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie, LokalnePodzadania.Count());
+            Dodaj_Podzadanie NowePodzadanie = new Dodaj_Podzadanie(db, zadanie, LokalnePodzadania.Count());
             NowePodzadanie.Owner = this;
             if (NowePodzadanie.ShowDialog() == true)
             {
