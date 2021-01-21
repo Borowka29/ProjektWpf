@@ -6,6 +6,13 @@
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
         Title="Lista zadań" Height="504" Width="642" >
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Plik">

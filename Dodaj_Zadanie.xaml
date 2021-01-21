@@ -6,6 +6,13 @@
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
         Title="Dodaj_Zadanie" Height="450" Width="800" >
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Label Content="_Treść zadania" Target="{Binding ElementName=TrescZadania}" ></Label>
@@ -105,8 +112,8 @@
             </StackPanel>
         </Grid>
         <WrapPanel DockPanel.Dock="Bottom">
-            <Button Name="UsunPodzadanie" IsEnabled="False"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" Click="UsunPodzadania">Usuń podzadania</Button>
-            <Button Name="DodajPodzadanie"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Background="#9CCDF4" FontWeight="Bold" Foreground="White" Click="dodajPodzadanie">Dodaj podzadanie</Button>
+            <Button Name="UsunPodzadanie" IsEnabled="False"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Click="UsunPodzadania">Usuń podzadania</Button>
+            <Button Name="DodajPodzadanie"  HorizontalAlignment="Left" Margin="10,2" Padding="5" Click="dodajPodzadanie">Dodaj podzadanie</Button>
         </WrapPanel>
         <ListView Name="ListaKrokow"  Margin="5" Width="auto" SelectionChanged="CzyMoznaUsunacPodzadanie">
             <ListView.View>
