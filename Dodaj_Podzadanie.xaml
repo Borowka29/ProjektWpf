@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
-        Title="Dodaj_Podzadanie" Height="150" Width="500">
+        Title="Dodaj_Podzadanie" Height="190" Width="500">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -18,20 +18,19 @@
             <Button Name="OKButton" Margin="5" Padding="15,3" IsDefault="True" Click="OKButton_Click">Stwórz</Button>
             <Button Name="CancelButton" Margin="5" Padding="15,3" IsCancel="True" Click="CancelButton_Click">Anuluj</Button>
         </WrapPanel>
-        
         <DockPanel DockPanel.Dock="Bottom">
-            <Label DockPanel.Dock="Left" Content="_Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
-            <Label DockPanel.Dock="Right" Name="ilePodzadan"></Label>
-            <Label DockPanel.Dock="Right" >Na liście jest:</Label>
-            <TextBox Name="ktoreNaLiscie" VerticalContentAlignment="Center"></TextBox>
+            <Label DockPanel.Dock="Left" Margin="1" Content="_Który na liście:" Target="{Binding ElementName=ktoreNaLiscie}"></Label>
+            <Label DockPanel.Dock="Right" Margin="1,1,3,1" Name="ilePodzadan"></Label>
+            <Label DockPanel.Dock="Right" Margin="1" >Na liście jest:</Label>
+            <TextBox Name="ktoreNaLiscie" VerticalContentAlignment="Center" Margin="1"></TextBox>
         </DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label HorizontalAlignment="Center" Content="_Treść podzadania:" Target="{Binding ElementName=TrescPodzadania}"></Label>
-            <TextBox Name="TrescPodzadania" Grid.Row="1" VerticalContentAlignment="Center"></TextBox>
+            <Label HorizontalAlignment="Center" Content="_Treść podzadania:" Target="{Binding ElementName=TrescPodzadania}" Margin="1"></Label>
+            <TextBox Name="TrescPodzadania" Grid.Row="1" VerticalContentAlignment="Center" Margin="5,0,5,2"></TextBox>
         </Grid>
     </DockPanel>
 </Window>
