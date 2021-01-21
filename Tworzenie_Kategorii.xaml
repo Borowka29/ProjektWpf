@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
+        Title="Nowa ketegoria" Height="100" Width="500">
 
     <Window.Resources>
         <Style TargetType="Label">
@@ -13,7 +14,6 @@
             <Setter Property="FontSize" Value="14"/>
         </Style>
     </Window.Resources>
-        Title="Nowa ketegoria" Height="100" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
