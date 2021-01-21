@@ -33,29 +33,33 @@ namespace ListaZadan
         {
             InitializeComponent();
             db = new ListaZadanContext();
-            TasksListView.ItemsSource = db.Zadania.Include(z=>z.Kategora_Zadanie).ToList();            
+
+            db.Kategoria_Zadanie.Include(k => k.Zadanie).Include(k => k.Kategoria).Load();
+
+            TasksListView.ItemsSource = db.Zadania.Include(z => z.Kategora_Zadanie).ToList();
+
+            grupuj();
         }
 
         private void TasksListViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-            // Nie wiem czemu nie działa poniższy kod 
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //GridViewColumnHeader column = (sender as GridViewColumnHeader);
-            //string sortBy = column.Tag.ToString();
-            //if (listViewSortCol != null)
-            //{
-            //    AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
-            //    //TasksListView.Items.SortDescriptions.Clear();
-            //}
+            GridViewColumnHeader column = (sender as GridViewColumnHeader);
+            string sortBy = column.Tag.ToString();
+            if (listViewSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
+                TasksListView.Items.SortDescriptions.Clear();
+            }
 
-            //ListSortDirection newDir = ListSortDirection.Ascending;
-            //if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
-            //    newDir = ListSortDirection.Descending;
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            if (listViewSortCol == column && listViewSortAdorner.Direction == newDir)
+                newDir = ListSortDirection.Descending;
 
-            //listViewSortCol = column;
-            //listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
-            //AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
-            ////TasksListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+            listViewSortCol = column;
+            listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
+            TasksListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+            TasksListView.Items.Refresh();
         }
 
         private void PokarzZadanie_Click(object sender, RoutedEventArgs e)
@@ -64,7 +68,6 @@ namespace ListaZadan
             var PodgladZadania = new Szczegoly(db, zadanie);
             PodgladZadania.Owner = this;
             PodgladZadania.ShowDialog();
-
         }
 
         private void EdytujZadanie_Click(object sender, RoutedEventArgs e)
@@ -72,38 +75,66 @@ namespace ListaZadan
             Zadanie zadanie = (sender as FrameworkElement).DataContext as Zadanie;
             var EdycjaZadania = new Edytuj_Zadanie(db, zadanie);
             EdycjaZadania.Owner = this;
-            if(true==EdycjaZadania.ShowDialog())
+            if (EdycjaZadania.ShowDialog() == true)
             {
-                TasksListView.ItemsSource = db.Zadania.ToList();
+                TasksListView.Items.Refresh();
+                grupuj();
             }
         }
 
         private void UsunZadania_Click(object sender, RoutedEventArgs e)
         {
-            foreach(Zadanie zad in TasksListView.SelectedItems)
+            foreach (Zadanie zad in TasksListView.SelectedItems)
             {
-                var zadanie = db.Zadania.FirstOrDefault(z => z == zad);
-                db.Zadania.Remove(zadanie);
+                db.Zadania.Remove(zad);
                 db.SaveChanges();
             }
-            TasksListView.ItemsSource = db.Zadania.ToList();
+            grupuj();
         }
 
         private void ListboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TasksListView.SelectedIndex >= 0)
+            {
                 UsunZadanie.IsEnabled = true;
+                if (TasksListView.SelectedItems.Count == 1)
+                    EdytujMenuItem.IsEnabled = true;
+                else
+                    EdytujMenuItem.IsEnabled = false;
+
+            }
             else
+            {
                 UsunZadanie.IsEnabled = false;
+                EdytujMenuItem.IsEnabled = false;
+            }
         }
 
         private void ZmianaGrupowania(object sender, SelectionChangedEventArgs e)
         {
-            int ile = 0;
-            if (Grupowanie.SelectedIndex == 1) TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.prorytet).ToList();
-            else if (Grupowanie.SelectedIndex == 2) TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.zakonczenie).ToList();
-            else if (ile != 0) { TasksListView.ItemsSource = db.Zadania.OrderByDescending(p => p.IdZadanie).ToList(); ile=1; }
+            grupuj();
+        }
+        private void grupuj()
+        {
+            if (Grupowanie.SelectedIndex == 1)
+            {
+                TasksListView.ItemsSource = db.Zadania.Include(z => z.Kategora_Zadanie).OrderBy(p => p.prorytet).ToList();
 
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TasksListView.ItemsSource);
+                PropertyGroupDescription groupDescription = new PropertyGroupDescription("prorytet");
+                view.GroupDescriptions.Add(groupDescription);
+            }
+            else if (Grupowanie.SelectedIndex == 2)
+            {
+                TasksListView.ItemsSource = db.Zadania.Include(z => z.Kategora_Zadanie).OrderBy(p => p.zakonczenie).ToList();
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(TasksListView.ItemsSource);
+                PropertyGroupDescription groupDescription = new PropertyGroupDescription("zakonczenie");
+                view.GroupDescriptions.Add(groupDescription);
+            }
+            else if (TasksListView != null)
+            {
+                TasksListView.ItemsSource = db.Zadania.Include(z => z.Kategora_Zadanie).OrderBy(z => z.IdZadanie).ToList();
+            }
         }
 
         private void Szukaj(object sender, TextChangedEventArgs e)
@@ -112,18 +143,18 @@ namespace ListaZadan
             {
                 TasksListView.ItemsSource = db.Zadania.Where(z => z.Tresc.ToLower().Contains(SzukajZadania.Text.ToLower())).ToList();
             }
-            else TasksListView.ItemsSource = db.Zadania.ToList();
+            else
+                grupuj();
         }
 
         private void DodajZadania_Click(object sender, RoutedEventArgs e)
         {
             var DodawanieZadania = new Dodaj_Zadanie(db);
             DodawanieZadania.Owner = this;
-            if(true==DodawanieZadania.ShowDialog())
+            if (DodawanieZadania.ShowDialog() == true)
             {
-                TasksListView.ItemsSource = db.Zadania.ToList();
+                grupuj();
             }
-            
         }
 
         private void ExportToPDF_Click(object sender, RoutedEventArgs e)
@@ -173,21 +204,18 @@ namespace ListaZadan
             TasksListView.ItemsSource = db.Zadania.ToList();
         }
 
-        //private void NewTask_Click(object sender, RoutedEventArgs e)
-        //{
-        //    NewTask view = new NewTask();
-        //    view.ShowDialog();
-        //}
+        private void EdytujKategorie_Click(object sender, RoutedEventArgs e)
+        {
+            EdycjaKategorii w = new EdycjaKategorii(db);
+            w.ShowDialog();
+            grupuj();
+        }
 
-        //private void EditTask_Click(object sender, RoutedEventArgs e)
-        //{
-        //    EditTask view = new EditTask();
-        //    view.ShowDialog();
-        //}
+        private void Zakoncz_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
-
-
-
     public class SortAdorner : Adorner
     {
         private static Geometry ascGeometry =

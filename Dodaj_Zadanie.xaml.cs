@@ -25,9 +25,8 @@ namespace ListaZadan
         ListaZadanContext db { get; set; }
         public Zadanie zadanie { get; set; }
         private ObservableCollection<Podzadania> LokalnePodzadania { get; set; }
-        private ObservableCollection<Kategora_Zadanie> LokalnaListaNatezacychKategorii { get; set; }= new ObservableCollection<Kategora_Zadanie>();
-
-        private ObservableCollection<Kategoria> LokalnaBazaNienalezacychKategorii { get; set; }
+        private List<Kategora_Zadanie> LokalnaListaNalezacychKategorii { get; set; } = new List<Kategora_Zadanie>();
+        private List<Kategoria> LokalnaBazaNienalezacychKategorii { get; set; }
 
         public Dodaj_Zadanie(ListaZadanContext db)
         {
@@ -35,11 +34,17 @@ namespace ListaZadan
             this.db = db;
             
             zadanie = new Zadanie();
+
+            zadanie.Kategora_Zadanie = new Collection<Kategora_Zadanie>();
+            zadanie.Podzadania = new Collection<Podzadania>();
+
             ListaKrokow.ItemsSource = zadanie.Podzadania;
-            ListaObecnychKategorii.ItemsSource =LokalnaListaNatezacychKategorii;
+            ListaObecnychKategorii.ItemsSource = LokalnaListaNalezacychKategorii;
 
             db.Kategorie.Include(o => o.Kategora_Zadanie).Load();
-            LokalnaBazaNienalezacychKategorii = db.Kategorie.Local.ToObservableCollection();
+            db.Kategoria_Zadanie.Include(k => k.Zadanie).Include(k => k.Kategoria).Load();
+
+            LokalnaBazaNienalezacychKategorii = db.Kategorie.Local.ToList();
             ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
         }
 
@@ -47,22 +52,20 @@ namespace ListaZadan
         {
             if(TrescZadania.Text.Length!=0 && DataDo.SelectedDate!=null)
             {
-                if(PrzedzialCzasu.IsChecked == false)
-                {
-                    zadanie.rozpoczecie = DateTime.Today;
-                }
+                if (PrzedzialCzasu.IsChecked == false)
+                    zadanie.rozpoczecie = null;
+                else
+                    zadanie.rozpoczecie = (DateTime)DataOd.SelectedDate;
+
                 zadanie.Tresc = TrescZadania.Text.ToString();
                 zadanie.zakonczenie = (DateTime)DataDo.SelectedDate;
                 zadanie.prorytet = Piorytet.Value;
-                db.Zadania.Add(zadanie);
-                //Zadanie ZmienianeZadanie = db.Zadania.FirstOrDefault(z => z == zadanie);
 
-                //db.Attach(zadanie).State = EntityState.Modified;
+                db.Zadania.Add(zadanie);
                 db.SaveChanges();
                 DialogResult = true;
                 this.Close();
             }
-
         }
 
         private void UsunPodzadania(object sender, RoutedEventArgs e)
@@ -84,11 +87,11 @@ namespace ListaZadan
         
         private void dodajPodzadanie(object sender, RoutedEventArgs e)
         {
-            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie, zadanie.Podzadania.Count());
+            var NowePodzadanie = new Dodaj_Podzadanie(db, zadanie);
             NowePodzadanie.Owner = this;
             if (NowePodzadanie.ShowDialog() == true)
             {
-                ListaKrokow.ItemsSource = db.Podzadania.Include(i => i.Zadanie).Where(k => k.Zadanie.IdZadanie == zadanie.IdZadanie).OrderBy(z => z.któreNaLiscie).ToList();
+                ListaKrokow.Items.Refresh();
             }
         }
 
@@ -100,18 +103,15 @@ namespace ListaZadan
                 Kategora_Zadanie NowaKategoria = new Kategora_Zadanie();
                 NowaKategoria.Zadanie = zadanie;
                 NowaKategoria.Kategoria = zad;
-                LokalnaListaNatezacychKategorii.Add(NowaKategoria);
+
+                zadanie.Kategora_Zadanie.Add(NowaKategoria);
+                LokalnaListaNalezacychKategorii.Add(NowaKategoria);
                 LokalnaBazaNienalezacychKategorii.Remove(zad);
             }
             ListaObecnychKategorii.Items.Refresh();
-            ListaNiedodanychKategorii.Items.Refresh();
-            
+            ListaNiedodanychKategorii.Items.Refresh();            
         }
         
-        private void OdswiezBazeKategorii()
-        {
-            
-        }
         private void WyborPrzedzialuCzasu(object sender, RoutedEventArgs e)
         {
             if (PrzedzialCzasu.IsChecked == true)
@@ -163,10 +163,13 @@ namespace ListaZadan
         {
             foreach (Kategora_Zadanie zad in ListaObecnychKategorii.SelectedItems)
             {
-                db.Kategoria_Zadanie.Remove(zad);
+                zadanie.Kategora_Zadanie.Remove(zad);
+                LokalnaListaNalezacychKategorii.Remove(zad);
+                LokalnaBazaNienalezacychKategorii.Add(zad.Kategoria);
                 db.SaveChanges();
             }
-            OdswiezBazeKategorii();
+            ListaObecnychKategorii.Items.Refresh();
+            ListaNiedodanychKategorii.Items.Refresh();
         }
 
         private void CzyMoznaUsunacKategorie(object sender, SelectionChangedEventArgs e)

@@ -13,8 +13,14 @@ namespace ListaZadan.Models
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        public virtual Zadanie Zadanie { get; set; }
+        [Required]
+        public Zadanie Zadanie { get; set; }
         [DataMember]
-        public virtual Kategoria Kategoria { get; set; }
+        [Required]
+        public Kategoria Kategoria { get; set; }
+        public override string ToString()
+        {
+            return Kategoria.Typ;
+        }
     }
 }
