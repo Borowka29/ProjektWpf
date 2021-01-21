@@ -6,6 +6,13 @@
         xmlns:local="clr-namespace:ListaZadan"
         mc:Ignorable="d"
         Title="Dodaj_Podzadanie" Height="150" Width="500">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
             <Button Name="OKButton" Margin="5" Padding="15,3" IsDefault="True" Click="OKButton_Click">Stwórz</Button>
