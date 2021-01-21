@@ -33,8 +33,15 @@ namespace ListaZadan
             Podzadanie = new Podzadania();
             Podzadanie.Zadanie = zadanie;
             this.zadanie = zadanie;
-            ilePodzadan.Content = ile;
-            IlePodzadan = ile;
+            if(zadanie.Podzadania != null)
+            {
+                IlePodzadan = zadanie.Podzadania.Count();
+            }
+            else
+            {
+                IlePodzadan = 0;
+            }
+            ilePodzadan.Content = IlePodzadan;
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)

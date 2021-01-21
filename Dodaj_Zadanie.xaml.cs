@@ -47,7 +47,7 @@ namespace ListaZadan
             LokalnaBazaNienalezacychKategorii = db.Kategorie.Local.ToList();
             ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
 
-            LokalnePodzadania = zadanie.Podzadania.Cast<Podzadania>().ToList();
+            LokalnePodzadania = new List<Podzadania>();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

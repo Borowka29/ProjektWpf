@@ -156,7 +156,7 @@ namespace ListaZadan
 
             db.Kategorie.Include(o => o.Kategora_Zadanie).Load();
             LokalnaBazaNienalezacychKategorii = db.Kategorie.Local
-                .Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie?.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria.IdKategoria == p.IdKategoria))).ToList();
+                .Where(p => !(p.Kategora_Zadanie.Any(k => k.Zadanie?.IdZadanie == EdytowaneZadanie.IdZadanie && k.Kategoria?.IdKategoria == p.IdKategoria))).ToList();
             ListaNiedodanychKategorii.ItemsSource = LokalnaBazaNienalezacychKategorii;
         }
 
@@ -189,6 +189,7 @@ namespace ListaZadan
             List<Podzadania> ZaznaczonePodzadania = ListaKrokow.SelectedItems.Cast<Podzadania>().ToList();
             foreach (Podzadania zad in ZaznaczonePodzadania)
             {
+                EdytowaneZadanie.Podzadania.Remove(zad);
                 LokalnePodzadania.Remove(zad);
                 EdytowaneZadanie.Podzadania.Remove(zad);
             }

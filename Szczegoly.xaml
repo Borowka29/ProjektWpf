@@ -10,7 +10,6 @@
         <Style TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="FontSize" Value="14"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -47,9 +46,7 @@
                     </ListView.View>
                 </ListView>
             </DockPanel>
-
         </Grid>
-
         <DockPanel DockPanel.Dock="Top" >
             <Label DockPanel.Dock="Left">Piorytet</Label>
             <Label DockPanel.Dock="Right" Margin="5,2" Content="{Binding ElementName=Piorytet, Path=Value}"></Label>
